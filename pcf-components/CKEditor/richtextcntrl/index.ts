@@ -6,6 +6,7 @@ const ClassicEditor = require( '@ckeditor/ckeditor5-build-classic' );
 //const ClassicEditor = require( '@ckeditor/ckeditor5-editor-classic/src/classiceditor' );
 
 import CustomUploadAdapter from  './CustomUploadAdapter';  
+import { config } from "process";
 export class richtextcntrl implements ComponentFramework.StandardControl<IInputs, IOutputs> {
 
 	private _divHeadingElement : HTMLDivElement;
@@ -15,7 +16,7 @@ export class richtextcntrl implements ComponentFramework.StandardControl<IInputs
 	private _context : ComponentFramework.Context<IInputs>;
 	private _editorText:string;
 	private _editorDefaultText:string;
-
+	private _editor:any;
 	/**
 	 * Empty constructor.
 	 */
@@ -56,14 +57,23 @@ export class richtextcntrl implements ComponentFramework.StandardControl<IInputs
 		//Convert div to CKEditor
 		ClassicEditor
 		.create(  document.querySelector( '#editor' ), {
-			extraPlugins: [this.CustomUploadAdapterPlugin]   
-		})
+			extraPlugins: [this.CustomUploadAdapterPlugin]
+			   
+		})		
 		.then( (editor: any) => {
 			console.log( editor );
+			this._editor = editor;
 			
-			
+			editor.editing.view.change((writer: { setStyle: (arg0: string, arg1: string, arg2: any) => void; }) => {
+				writer.setStyle(
+					"height",
+					"400px",
+					editor.editing.view.document.getRoot()
+				);
+				});
 			editor.model.document.on('change:data', (evt: any, data: any) => {
 				this._editorText = editor.getData();
+				
 				console.log(this._editorText);
 
 				//Update the output property
@@ -73,7 +83,6 @@ export class richtextcntrl implements ComponentFramework.StandardControl<IInputs
 		.catch( (error: any) => {
 			console.error( error );
 		} );
-
 		
 		
 	}
@@ -86,7 +95,21 @@ export class richtextcntrl implements ComponentFramework.StandardControl<IInputs
 	public updateView(context: ComponentFramework.Context<IInputs>): void
 	{
 		this._context = context; 
+		var _height = this._context.parameters.editor_height ? this._context.parameters.editor_height :400;
+		var _width = this._context.parameters.editor_width ? this._context.parameters.editor_width :400;
 		
+		this._editor.editing.view.change((writer: { setStyle: (arg0: string, arg1: string, arg2: any) => void; }) => {
+				writer.setStyle(
+					"height",
+					_height.toString(),
+					this._editor.editing.view.document.getRoot()
+				);
+				writer.setStyle(
+					"width",
+					_width.toString(),
+					this._editor.editing.view.document.getRoot()
+				);
+				});
 	}
 
 	/**

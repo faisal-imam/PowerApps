@@ -17,8 +17,11 @@
       <domain></domain>
       -->
     </external-service-usage>
+     
     <!-- property node identifies a specific, configurable piece of data that the control expects from CDS -->
     <property name="editor_text" display-name-key="Editor Text" description-key="This property will contain the text typed in the text editor" of-type="Multiple" usage="bound" required="true" />
+    <property name="editor_height" display-name-key="Height" description-key="Set Height" of-type="Whole.None" usage="bound" required="true" />
+    <property name="editor_width" display-name-key="Width" description-key="Set Width" of-type="Whole.None" usage="bound" required="true" />
     <!-- 
       Property node's of-type attribute can be of-type-group attribute. 
       Example:
