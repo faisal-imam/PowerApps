@@ -1,0 +1,14 @@
+//Build
+npm run build
+
+//First Publish 
+pac solution init --publisher-name BabakDanyal --publisher-prefix mbda
+pac solution add-reference --path ../
+msbuild /t:build /restore
+pac auth create --url https://purpleplaypen.crm6.dynamics.com/
+pac pcf push --publisher-prefix mbda
+
+//Update and Publish
+msbuild /t:build
+pac auth create --url https://purpleplaypen.crm6.dynamics.com/
+pac pcf push --publisher-prefix mbda
