@@ -14,6 +14,7 @@ export class richtextcntrl implements ComponentFramework.StandardControl<IInputs
 	private _notifyOutPutChanges:() => void;
 	private _context : ComponentFramework.Context<IInputs>;
 	private _editorText:string;
+	private _editorDefaultText:string;
 
 	/**
 	 * Empty constructor.
@@ -48,7 +49,7 @@ export class richtextcntrl implements ComponentFramework.StandardControl<IInputs
 		this._divEditorElement.setAttribute("id","editor");
 
 		//Add Elements to the DOM
-		this._container.appendChild(this._divHeadingElement);
+		//this._container.appendChild(this._divHeadingElement);
 		this._container.appendChild(this._divEditorElement);
 		
 		
@@ -59,6 +60,8 @@ export class richtextcntrl implements ComponentFramework.StandardControl<IInputs
 		})
 		.then( (editor: any) => {
 			console.log( editor );
+			
+			
 			editor.model.document.on('change:data', (evt: any, data: any) => {
 				this._editorText = editor.getData();
 				console.log(this._editorText);
@@ -72,6 +75,7 @@ export class richtextcntrl implements ComponentFramework.StandardControl<IInputs
 		} );
 
 		
+		
 	}
 
 
@@ -82,6 +86,7 @@ export class richtextcntrl implements ComponentFramework.StandardControl<IInputs
 	public updateView(context: ComponentFramework.Context<IInputs>): void
 	{
 		this._context = context; 
+		
 	}
 
 	/**
