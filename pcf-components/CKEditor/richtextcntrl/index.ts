@@ -39,7 +39,7 @@ export class richtextcntrl implements ComponentFramework.StandardControl<IInputs
 		this._context = context;
 		this._container = container;
 		this._notifyOutPutChanges = notifyOutputChanged;
-		this._editorText = "";
+		this._editorText = this._context.parameters.editor_text.raw ?? "";
 
 		//create elements
 		this._divHeadingElement = document.createElement("div");
@@ -63,6 +63,7 @@ export class richtextcntrl implements ComponentFramework.StandardControl<IInputs
 		.then( (editor: any) => {
 			console.log( editor );
 			this._editor = editor;
+			this._editor.setData(this._editorText);
 			
 			editor.editing.view.change((writer: { setStyle: (arg0: string, arg1: string, arg2: any) => void; }) => {
 				writer.setStyle(
